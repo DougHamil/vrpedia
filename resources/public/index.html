@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Semantic Web VR</title>
+    <script src="https://aframe.io/releases/0.6.1/aframe.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="/js/util.js"></script>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="/js/components/super-anchor.js"></script>
+    <script src="/js/components/surround-children.js"></script>
+    <script src="/js/components/fit-texture.js"></script>
+    <script src="/js/components/fit-text-width.js"></script>
+<body>
+<a-scene vr-mode-ui="enabled:false;">
+    <a-sky color="#FFF"></a-sky>
+    <a-entity position="0 4 -4">
+        <a-entity id="titleText"
+                    fit-text-width="height:0.25"
+                    geometry="primitive:plane;width:auto;height:auto;"
+                    material="color:#333"
+                    super-anchor="0.5 0 0"
+                    text="height:1;value: Loading; color:#FFF; align:left;" >
+        </a-entity>
+        <a-plane id="thumbnail" fit-texture="use-factor:true;pixels-per-unit:200; max-width:2.0;" super-anchor="-0.5 -0.5 0" position="0 0.25 0"></a-plane>
+        <a-text id="abstractText"
+                value="Please wait"
+                wrap-count="100" width="6" line-height="100" color="#333" align="left" anchor="left"
+                baseline="top" position="0 -0.30 0" font="roboto"></a-text>
+    </a-entity>
+    <a-plane position="0 0 0" rotation="-90 0 0" width="4" height="4" color="#444"></a-plane>
+    <a-camera>
+    </a-camera>
+</a-scene>
+<script src="/js/main.js"></script>
+</body>
+</html>

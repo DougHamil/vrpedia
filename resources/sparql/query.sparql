@@ -1,0 +1,75 @@
+-- name: select-description
+-- Endpoint: http://dbpedia.org/sparql
+PREFIX dbr: <http://dbpedia.org/resource/>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?abstract ?label ?image
+WHERE {
+    ?thing rdfs:label ?label .
+    ?thing dbo:abstract ?abstract .
+    OPTIONAL { ?thing foaf:depiction ?image . }
+    FILTER langMatches(lang(?abstract), 'en') .
+    FILTER langMatches(lang(?label), 'en') .
+}
+
+-- name: select-redirects
+-- Endpoint: http://dbpedia.org/sparql
+PREFIX dbr: <http://dbpedia.org/resource/>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+
+SELECT ?parent
+WHERE {
+    ?thing dbo:wikiPageRedirects ?parent .
+}
+
+-- name: select-types
+-- Endpoint: http://dbpedia.org/sparql
+PREFIX dbr: <http://dbpedia.org/resource/>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+
+SELECT DISTINCT ?type
+WHERE {
+    ?thing a ?type .
+}
+
+-- name: select-population
+-- Endpoint: http://dbpedia.org/sparql
+PREFIX dbr: <http://dbpedia.org/resource/>
+PREFIX dbp: <http://dbpedia.org/property/>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+
+SELECT DISTINCT ?populationTotal ?populationDemonym
+WHERE {
+    OPTIONAL { ?thing dbp:populationDemonym ?populationDemonym . }
+    ?thing dbo:populationTotal ?populationTotal .
+}
+
+-- name: select-location
+-- Endpoint: http://dbpedia.org/sparql
+PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+SELECT DISTINCT ?latitude ?longitude
+WHERE {
+    ?thing geo:lat ?latitude .
+    ?thing geo:long ?longitude .
+}
+
+-- name: select-people
+-- Endpoint: http://dbpedia.org/sparql
+PREFIX dbr: <http://dbpedia.org/resource/>
+PREFIX dbp: <http://dbpedia.org/property/>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX dct: <http://purl.org/dc/terms/>
+
+SELECT DISTINCT ?uri ?name ?gender ?image ?description
+WHERE {
+    ?thing ?relation ?uri .
+    ?uri a dbo:Person .
+    ?uri foaf:name ?name .
+    ?uri foaf:gender ?gender .
+    ?uri dct:description ?description .
+    OPTIONAL {?uri dbo:thumbnail ?image .}
+}
