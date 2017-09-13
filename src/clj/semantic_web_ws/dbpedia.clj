@@ -46,6 +46,7 @@
 (defn resolve-common [uri res]
   (-> res
       (into (sparql/query-description uri))
+      (update :abstract (partial util/ascii-text))
       (update :image (util/default-on-nil-arg util/resolve-redirects "img/warning_clojure.png"))
       (assoc :types (sparql/query-types uri))))
 

@@ -3,6 +3,7 @@
 /classes
 /checkouts
 pom.xml
+vcs.xml
 *.jar
 *.class
 /.lein-*
