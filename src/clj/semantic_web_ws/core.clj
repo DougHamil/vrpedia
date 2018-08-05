@@ -8,6 +8,7 @@
             [mount.core :as mount])
   (:gen-class))
 
+
 (def cli-options
   [["-p" "--port PORT" "Port number"
     :parse-fn #(Integer/parseInt %)]])
@@ -17,8 +18,10 @@
                 :start
                 (http/start
                   (-> env
-                      (assoc :handler (handler/app))
-                      (update :port #(or (-> env :options :port) %))))
+                      (assoc
+                       :host "127.0.0.1"
+                       :handler (handler/app))
+                      (update :port #(or (-> env :port) %))))
                 :stop
                 (http/stop http-server))
 

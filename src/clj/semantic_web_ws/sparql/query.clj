@@ -44,3 +44,20 @@
 (defn query-location [uri] (flatten-values (query-thing-top uri select-location)))
 (defn query-people [uri] (map flatten-values (query-thing uri select-people)))
 
+(defn format-references [references reverse-references]
+  (let [rel-names (reduce #(assoc %1 (:rel %2) (:relLabel %2)) {} references)
+        grouped-refs (group-by :relLabel references)
+        grouped-refs-reversed (group-by #(str "is " (:relLabel %) " of") reverse-references)
+        grouped (merge-with concat grouped-refs grouped-refs-reversed)]
+    grouped))
+
+(merge-with concat {:a [1 2]} {:a [3 4]})
+
+(defn query-references [uri]
+  (let [references (map flatten-values (query-thing uri select-references))
+        reverse-references (map flatten-values (query-thing uri select-references-reverse))]
+    (format-references reverse-references references)))
+
+(defn query-references-reverse [uri] (format-references (map flatten-values (query-thing uri select-references-reverse))))
+;(def test-uri "http://dbpedia.org/resource/Boise,_Idaho")
+;(format-references (map flatten-values (query-thing test-uri select-references)))

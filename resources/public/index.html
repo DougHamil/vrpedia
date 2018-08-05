@@ -4,34 +4,48 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Semantic Web VR</title>
-    <script src="https://aframe.io/releases/0.6.1/aframe.min.js"></script>
+    <script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/aframe-layout-component@4.2/dist/aframe-layout-component.min.js"></script>
     <script src="/js/util.js"></script>
-    <script src="https://unpkg.com/vue"></script>
     <script src="/js/components/super-anchor.js"></script>
     <script src="/js/components/surround-children.js"></script>
     <script src="/js/components/fit-texture.js"></script>
     <script src="/js/components/fit-text-width.js"></script>
+    <script src="/js/components/tree-menu.js"></script>
+    <script src="/js/components/menu-abstract.js"></script>
+    <script src="/js/components/text-button.js"></script>
+    <script src="/js/components/text-button-list.js"></script>
+    <script src="/js/systems/vrpedia.js"></script>
 <body>
 <a-scene vr-mode-ui="enabled:false;">
+    <a-camera position="0 1.6 0">
+        <a-cursor></a-cursor>
+    </a-camera>
     <a-sky color="#FFF"></a-sky>
-    <a-entity position="0 4 -4">
-        <a-entity id="titleText"
+    <a-entity id="relationshipsList" position="4 3 -3" rotation="0 -30 0"
+              text-button-list="width:4"
+              layout="type: line;plane:yz;reverse:false;margin:-0.5">
+    </a-entity>
+    <a-entity id="relatedSubjectsList" position="4 3 0" rotation="0 -85 0"
+              text-button-list="width:4"
+              layout="type: line;plane:yz;reverse:false;margin:-0.5">
+    </a-entity>
+    <a-entity id="subjectPanel" position="-2 4 -4">
+        <a-entity id="subjectTitle"
                     fit-text-width="height:0.25"
                     geometry="primitive:plane;width:auto;height:auto;"
                     material="color:#333"
                     super-anchor="0.5 0 0"
-                    text="height:1;value: Loading; color:#FFF; align:left;" >
+                    text="value:Loading">
         </a-entity>
-        <a-plane id="thumbnail" fit-texture="use-factor:true;pixels-per-unit:200; max-width:2.0;" super-anchor="-0.5 -0.5 0" position="0 0.25 0"></a-plane>
-        <a-text id="abstractText"
+        <a-plane id="subjectImage" fit-texture="use-factor:true;pixels-per-unit:200; max-width:2.0;" super-anchor="-0.5 -0.5 0" position="0 0.25 0"></a-plane>
+        <a-text id="subjectAbstract"
                 value="Please wait"
-                wrap-count="100" width="6" line-height="100" color="#333" align="left" anchor="left"
+                wrap-count="40" width="4" line-height="80" color="#333" align="left" anchor="left"
                 baseline="top" position="0 -0.30 0" font="roboto"></a-text>
     </a-entity>
     <a-plane position="0 0 0" rotation="-90 0 0" width="4" height="4" color="#444"></a-plane>
-    <a-camera>
-    </a-camera>
 </a-scene>
 <script src="/js/main.js"></script>
 </body>

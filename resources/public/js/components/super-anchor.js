@@ -12,8 +12,8 @@ AFRAME.registerComponent('super-anchor', {
         AFRAME.utils.extend(self.rawPosition, el.getAttribute('position'));
         self.lastPosition = self.rawPosition;
         this.el.addEventListener('componentchanged', function(event){
-            if(event.detail.name === 'position') {
-                var newPosition = event.detail.newData;
+            if(event.detail.name === 'position' && event.detail.newData) {
+                var newPosition = event.target.getAttribute('position');
                 if(!AFRAME.utils.deepEqual(self.assignedPosition, newPosition))
                 {
                     AFRAME.utils.extend(self.rawPosition, event.detail.newData);
@@ -21,7 +21,9 @@ AFRAME.registerComponent('super-anchor', {
                 }
             }
             else if(event.detail.name === 'geometry') {
-                self.applyTransformation(event.detail.newData.width, event.detail.newData.height);
+                var width = event.target.getAttribute('width');
+                var height = event.target.getAttribute('height');
+                self.applyTransformation(width, height);
             }
         });
         this.applyTransformation();

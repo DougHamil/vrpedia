@@ -1,11 +1,10 @@
 document.body.onload = function() {
-    var query = getParameterByName('query') || 'Boise';
+    let query = getParameterByName('subject') || 'Boise';
+    let scene = document.querySelector('a-scene');
 
     $.get('/api/entity/search?query='+query).done(response => {
-                console.log(response);
-                var titleTextEl = document.querySelector("#titleText");
-                titleTextEl.setAttribute('text', {value:response.label});
-                $("#abstractText").attr('value', response.abstract);
-                $("#thumbnail").attr("material", "src: url("+response.image+")");
-            });
-}
+        console.log("Subject:");
+        console.log(response);
+        scene.systems.vrpedia.rebuild(response);
+    });
+};

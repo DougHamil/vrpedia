@@ -34,7 +34,7 @@ AFRAME.registerComponent('fit-text-width', {
         var newWidth = pixelWidth * factor;
         text.data.width = newWidth;
         this.el.setAttribute("text", {width:newWidth, wrapPixels:pixelWidth+5});
-        var geom = this.el.getAttribute('geometry');
+        geom = this.el.getAttribute('geometry');
         if(geom) {
             this.el.setAttribute('geometry', {"width":newWidth+this.data.paddingX, "height":this.data.height+this.data.paddingY});
         }

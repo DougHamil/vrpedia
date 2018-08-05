@@ -73,3 +73,31 @@ WHERE {
     ?uri dct:description ?description .
     OPTIONAL {?uri dbo:thumbnail ?image .}
 }
+
+-- name: select-references
+-- Endpoint: http://dbpedia.org/sparql
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+select distinct ?rel ?Concept ?relLabel ?conceptLabel
+where {
+ ?Concept ?rel ?thing .
+ ?rel rdfs:label ?relLabel .
+ ?Concept rdfs:label ?conceptLabel
+ FILTER langMatches(lang(?relLabel), 'en') .
+ FILTER langMatches(lang(?conceptLabel), 'en') .
+} 
+LIMIT 100
+
+-- name: select-references-reverse
+-- Endpoint: http://dbpedia.org/sparql
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+select distinct ?rel ?Concept ?relLabel ?conceptLabel
+where {
+ ?thing ?rel ?Concept .
+ ?rel rdfs:label ?relLabel .
+ ?Concept rdfs:label ?conceptLabel
+ FILTER langMatches(lang(?relLabel), 'en') .
+ FILTER langMatches(lang(?conceptLabel), 'en') .
+} 
+LIMIT 100

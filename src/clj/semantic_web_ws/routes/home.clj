@@ -7,13 +7,6 @@
 (defn home-page []
   (response/found "/index.html"))
 
-(defn about-page []
-  (layout/render "about.html"))
-
-(defn test-page [] "Test2")
-
 (defroutes home-routes
-  (GET "/" [] (home-page))
-  (GET "/test" [] (test-page))
-  (GET "/about" [] (about-page)))
+  (GET "/" [] (home-page)))
 
