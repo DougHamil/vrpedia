@@ -1,15 +1,24 @@
 AFRAME.registerSystem('vrpedia',{
     init:function(){
+        // Fields
+        this.raycasters = [];
+
         // Elements
         this.relationshipsList = document.querySelector('#relationshipsList');
         this.relatedSubjectsList = document.querySelector('#relatedSubjectsList');
         this.subjectAbstract = document.querySelector('#subjectAbstract');
         this.subjectTitle = document.querySelector('#subjectTitle');
         this.subjectImage = document.querySelector('#subjectImage');
+        this.debug = document.querySelector('#debug');
 
         // Events
         this.relationshipsList.addEventListener('entry-selected', this.onRelationshipSelected.bind(this));
         this.relatedSubjectsList.addEventListener('entry-selected', this.onRelatedSubjectSelected.bind(this));
+    },
+    tick:function() {
+        return;
+        this.debug.setAttribute('value',
+                                this.raycasters[0].objects.length + ' vs ' + document.querySelectorAll('.collidable').length);
     },
     loadSubject: function(subjectUri) {
         console.log(encodeURI(subjectUri));
@@ -18,13 +27,17 @@ AFRAME.registerSystem('vrpedia',{
     rebuild:function(subject) {
         this.subject = subject;
         this.subjectTitle.setAttribute('text', {value:subject.label});
-        this.subjectAbstract.setAttribute('value', subject.abstract);
-        this.subjectImage.setAttribute('material', {src: 'url('+subject.image+')'});
+        this.subjectAbstract.setAttribute('text-texture', 'text', subject.abstract);
+        //this.subjectImage.setAttribute('material', {src: 'url('+subject.image+')'});
         this.subjectTitle.components['super-anchor'].applyTransformation();
 
         let references = this.extractReferences(subject);
         this.relationshipsList.components['text-button-list'].rebuild(references);
         this.rebuildRelatedSubjectsList([]);
+
+    },
+    registerRaycaster:function(raycaster) {
+        this.raycasters.push(raycaster);
     },
     extractReferences:function(subject) {
         let entries = [];
@@ -56,6 +69,5 @@ AFRAME.registerSystem('vrpedia',{
             });
         }
         this.relatedSubjectsList.components['text-button-list'].rebuild(entries);
-        console.log(subjects);
     }
 });

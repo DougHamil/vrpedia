@@ -19,7 +19,7 @@
                 (http/start
                   (-> env
                       (assoc
-                       :host "127.0.0.1"
+                       :host "0.0.0.0"
                        :handler (handler/app))
                       (update :port #(or (-> env :port) %))))
                 :stop
