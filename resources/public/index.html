@@ -4,51 +4,48 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Semantic Web VR</title>
+    <script crossorigin src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+
     <script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
     <script src="https://unpkg.com/three.texttexture"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://unpkg.com/aframe-layout-component@4.2/dist/aframe-layout-component.min.js"></script>
     <script src="/js/util.js"></script>
+    <script src="/js/systems/vrpedia.js"></script>
+
+    <!-- A-Frame Components -->
     <script src="/js/components/super-anchor.js"></script>
-    <script src="/js/components/surround-children.js"></script>
     <script src="/js/components/fit-texture.js"></script>
-    <script src="/js/components/fit-text-width.js"></script>
-    <script src="/js/components/tree-menu.js"></script>
-    <script src="/js/components/menu-abstract.js"></script>
+    <script src="/js/components/text-background.js"></script>
     <script src="/js/components/text-button.js"></script>
     <script src="/js/components/text-button-list.js"></script>
     <script src="/js/components/user-controller.js"></script>
     <script src="/js/components/text-texture.js"></script>
-    <script src="/js/systems/vrpedia.js"></script>
+    <script src="/js/components/grab-scroll.js"></script>
+
+    <!-- React Components -->
+    <script src="js/components/react-button.jsx" type="text/babel" ></script>
+    <script src="js/components/subject-list.jsx" type="text/babel" ></script>
+    <script src="js/components/relationships-list.jsx" type="text/babel" ></script>
+    <script src="js/components/vrpedia.jsx" type="text/babel" ></script>
 <body>
 <a-scene vr-mode-ui="enabled:true;" stats background="color:#222">
+    <a-sky color="#222"
+           segments-height="1"
+           segments-width="1"></a-sky>
     <a-camera position="0 1.6 0">
         <a-cursor></a-cursor>
     </a-camera>
     <a-entity laser-controls raycaster="objects: .collidable" user-controller>
     </a-entity>
-
+    <a-entity id="vrpedia-root">
     </a-entity>
-    <a-entity id="relationshipsList" position="4 3 -3" rotation="0 -30 0"
-              text-button-list="width:4"
-              layout="type: line;plane:yz;reverse:0;margin:-0.5">
-    </a-entity>
-    <a-entity id="relatedSubjectsList" position="4 3 0" rotation="0 -85 0"
-              text-button-list="width:4"
-              layout="type: line;plane:yz;reverse:0;margin:-0.5">
-    </a-entity>
-    <a-entity id="subjectPanel" position="-3.5 4 -8">
-        <a-entity id="subjectTitle"
-                    fit-text-width="height:0.25"
-                    geometry="primitive:plane;width:auto;height:auto;"
-                    material="color:#333"
-                    super-anchor="0.5 0 0"
-                    text="value:Loading">
-        </a-entity>
-        <a-plane id="subjectImage" fit-texture="use-factor:true;pixels-per-unit:200; max-width:2.0;" super-anchor="-0.5 -0.5 0" position="0 0.25 0"></a-plane>
-        <a-entity id="subjectAbstract" text-texture="text:Please wait;font:roboto;width:8;fontSize:58" ></a-entity>
-    <a-text id="debug" position="0 0 -8" value="Debug" ></a-text>
 </a-scene>
 <script src="/js/main.js"></script>
+<script type="text/babel" >
+ ReactDOM.render(<VRPedia></VRPedia>, document.getElementById('vrpedia-root'));
+</script>
 </body>
 </html>

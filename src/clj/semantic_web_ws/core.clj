@@ -8,7 +8,6 @@
             [mount.core :as mount])
   (:gen-class))
 
-
 (def cli-options
   [["-p" "--port PORT" "Port number"
     :parse-fn #(Integer/parseInt %)]])

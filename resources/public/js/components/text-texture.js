@@ -54,11 +54,11 @@ AFRAME.registerComponent('text-texture', {
         return lines;
     },
     resize:function() {
-
         let width = this.data.width;
         let height = width * ( 1.0 / this.texture.imageAspect);
         this.mesh.scale.set(width, height, 1);
         this.mesh.position.set(width/2.0, -height/2.0, 0);
+        window._VRPedia.forceRaycasterRefresh();
     },
     trimText:function(text) {
         return text.replace(/\u0000/gm, '').trim();

@@ -15,13 +15,12 @@ AFRAME.registerComponent('fit-text-width', {
         }
     },
     init:function(){
-        var self = this;
-        this.el.addEventListener('componentchanged', function(event){
+        this.el.addEventListener('componentchanged', (event) => {
             if(event.detail.name === 'text') {
-                self.calculateWidth();
+                this.calculateWidth();
             }
         });
-        self.calculateWidth();
+        this.calculateWidth();
     },
     calculateWidth: function() {
         var text = this.el.components.text;
@@ -32,11 +31,13 @@ AFRAME.registerComponent('fit-text-width', {
         var factor = this.data.height / geom.layout._height;
         var pixelWidth = geom.layout._measure(text.data.value, 0, text.data.value.length, 10000000000.0).width;
         var newWidth = pixelWidth * factor;
-        text.data.width = newWidth;
-        this.el.setAttribute("text", {width:newWidth, wrapPixels:pixelWidth+5});
+        console.log(newWidth);
+        console.log(pixelWidth);
         geom = this.el.getAttribute('geometry');
         if(geom) {
-            this.el.setAttribute('geometry', {"width":newWidth+this.data.paddingX, "height":this.data.height+this.data.paddingY});
+            this.el.setAttribute('geometry', {width:newWidth+this.data.paddingX, height:this.data.height+this.data.paddingY});
+            console.log(this.el.components.material);
+            text.updateLayout(text.data);
         }
     },
 });
