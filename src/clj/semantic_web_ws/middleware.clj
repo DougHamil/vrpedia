@@ -54,18 +54,7 @@
     (fn [v] (-> ^ReadableInstant v .getMillis))
     (fn [v] (-> ^ReadableInstant v .getMillis .toString))))
 
-(def restful-format-options
-  (update
-    muuntaja/default-options
-    :formats
-    merge
-    {"application/transit+json"
-     {:decoder [(partial transit-format/make-transit-decoder :json)]
-      :encoder [#(transit-format/make-transit-encoder
-                   :json
-                   (merge
-                     %
-                     {:handlers {org.joda.time.DateTime joda-time-writer}}))]}}))
+(def restful-format-options muuntaja/default-options)
 
 (defn wrap-formats [handler]
   (let [wrapped (-> handler wrap-params (wrap-format restful-format-options))]

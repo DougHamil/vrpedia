@@ -1,12 +1,12 @@
 (ns user
   (:require [mount.core :as mount]
-            semantic-web-ws.core))
+            [semantic-web-ws.core :as core]))
 
 (defn start []
-  (mount/start-without #'semantic-web-ws.core/repl-server))
+  (mount/start-without #'core/repl-server))
 
 (defn stop []
-  (mount/stop-except #'semantic-web-ws.core/repl-server))
+  (mount/stop-except #'core/repl-server))
 
 (defn restart []
   (stop)

@@ -4,16 +4,12 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Semantic Web VR</title>
-    <script crossorigin src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
 
     <script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
     <script src="https://unpkg.com/three.texttexture"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://unpkg.com/aframe-layout-component@4.2/dist/aframe-layout-component.min.js"></script>
-    <script src="/js/util.js"></script>
-    <script src="/js/systems/vrpedia.js"></script>
+    <script src="https://unpkg.com/aframe-curve-component/dist/aframe-curve-component.min.js"></script>
+    <script src="/js/THREE.MeshLine.js"></script>
 
     <!-- A-Frame Components -->
     <script src="/js/components/super-anchor.js"></script>
@@ -22,30 +18,16 @@
     <script src="/js/components/text-button.js"></script>
     <script src="/js/components/text-button-list.js"></script>
     <script src="/js/components/user-controller.js"></script>
-    <script src="/js/components/text-texture.js"></script>
     <script src="/js/components/grab-scroll.js"></script>
-
-    <!-- React Components -->
-    <script src="js/components/react-button.jsx" type="text/babel" ></script>
-    <script src="js/components/subject-list.jsx" type="text/babel" ></script>
-    <script src="js/components/relationships-list.jsx" type="text/babel" ></script>
-    <script src="js/components/vrpedia.jsx" type="text/babel" ></script>
+    <script src="/js/components/text-texture.js"></script>
+    <script src="/js/components/spline.js"></script>
 <body>
 <a-scene vr-mode-ui="enabled:true;" stats background="color:#222">
-    <a-sky color="#222"
-           segments-height="1"
-           segments-width="1"></a-sky>
-    <a-camera position="0 1.6 0">
+    <a-camera position="0 1.6 0" >
         <a-cursor></a-cursor>
     </a-camera>
-    <a-entity laser-controls raycaster="objects: .collidable" user-controller>
-    </a-entity>
-    <a-entity id="vrpedia-root">
-    </a-entity>
+    <a-entity id="app" ></a-entity>
 </a-scene>
-<script src="/js/main.js"></script>
-<script type="text/babel" >
- ReactDOM.render(<VRPedia></VRPedia>, document.getElementById('vrpedia-root'));
-</script>
+<script src="js/vrpedia.js"  type="text/javascript" ></script>
 </body>
 </html>

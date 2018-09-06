@@ -12,10 +12,10 @@
                  [luminus-nrepl "0.1.4"]
                  [luminus/ring-ttl-session "0.3.2"]
                  [markdown-clj "1.0.1"]
-                 [metosin/muuntaja "0.3.2"]
+                 [metosin/muuntaja "0.6.0"]
                  [metosin/ring-http-response "0.9.0"]
                  [mount "0.1.11"]
-                 [org.clojure/clojure "1.8.0"]
+                 [org.clojure/clojure "1.9.0"]
                  [org.clojure/tools.cli "0.3.5"]
                  [org.clojure/tools.logging "0.4.0"]
                  [org.webjars.bower/tether "1.4.0"]
@@ -28,7 +28,13 @@
                  [selmer "1.11.1"]
                  [seymores/luhn58 "0.1.1"]
                  [yesparql "0.3.1"]
-                 [org.apache.lucene/lucene-analyzers-common "6.6.1"]]
+                 [org.apache.lucene/lucene-analyzers-common "6.6.1"]
+                 ;; UI
+                 [org.clojure/clojurescript "1.10.339"]
+                 [figwheel-sidecar "0.5.16"]
+                 [cljs-http "0.1.45"]
+                 [reagent "0.8.1"]
+                 [reagent-utils "0.3.1"]]
 
   :min-lein-version "2.0.0"
 
@@ -40,8 +46,19 @@
   :main ^:skip-aot semantic-web-ws.core
 
   :plugins [[lein-cprop "1.0.3"]
-            [lein-immutant "2.1.0"]]
+            [lein-cljsbuild "1.1.7"]
+            [lein-immutant "2.1.0"]
+            [lein-figwheel "0.5.16"]]
 
+  :cljsbuild {:builds {:dev {:source-paths ["src/cljs"]
+                             :figwheel {:on-jsload "vrpedia.core/on-reload"}
+                             :compiler {:main "vrpedia.core"
+                                        :asset-path "/js/out"
+                                        :optimizations :none
+                                        :source-map true
+                                        :pretty-print true
+                                        :output-to "resources/public/js/vrpedia.js"
+                                        :output-dir "resources/public/js/out"}}}}
   :profiles
   {:uberjar {:omit-source true
              :aot :all

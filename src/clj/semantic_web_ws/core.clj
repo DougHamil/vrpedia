@@ -2,6 +2,7 @@
   (:require [semantic-web-ws.handler :as handler]
             [luminus.repl-server :as repl]
             [luminus.http-server :as http]
+            [figwheel-sidecar.repl-api :refer [start-figwheel! stop-figwheel!]]
             [semantic-web-ws.config :refer [env]]
             [clojure.tools.cli :refer [parse-opts]]
             [clojure.tools.logging :as log]
@@ -15,14 +16,16 @@
 (mount/defstate ^{:on-reload :noop}
                 http-server
                 :start
-                (http/start
-                  (-> env
-                      (assoc
-                       :host "0.0.0.0"
-                       :handler (handler/app))
-                      (update :port #(or (-> env :port) %))))
+  (do (start-figwheel!)
+      (http/start
+       (-> env
+           (assoc
+            :host "0.0.0.0"
+            :handler (handler/app))
+           (update :port #(or (-> env :port) %)))))
                 :stop
-                (http/stop http-server))
+  (do (stop-figwheel!)
+      (http/stop http-server)))
 
 (mount/defstate ^{:on-reload :noop}
                 repl-server

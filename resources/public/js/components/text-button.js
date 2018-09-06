@@ -45,7 +45,6 @@ AFRAME.registerComponent('text-button', {
         this.frame.setAttribute('material', 'color:#333');
     },
     update:function(oldData) {
-        console.log(this.data.text);
         if(this.data.text)
             this.text.setAttribute('value', this.data.text);
     }
