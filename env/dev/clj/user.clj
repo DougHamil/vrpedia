@@ -1,6 +1,6 @@
 (ns user
   (:require [mount.core :as mount]
-            [semantic-web-ws.core :as core]))
+            [vrpedia.core :as core]))
 
 (defn start []
   (mount/start-without #'core/repl-server))

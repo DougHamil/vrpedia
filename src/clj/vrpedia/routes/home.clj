@@ -1,5 +1,5 @@
-(ns semantic-web-ws.routes.home
-  (:require [semantic-web-ws.layout :as layout]
+(ns vrpedia.routes.home
+  (:require [vrpedia.layout :as layout]
             [compojure.core :refer [defroutes GET]]
             [ring.util.http-response :as response]
             [clojure.java.io :as io]))

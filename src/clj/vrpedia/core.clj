@@ -1,9 +1,9 @@
-(ns semantic-web-ws.core
-  (:require [semantic-web-ws.handler :as handler]
+(ns vrpedia.core
+  (:require [vrpedia.handler :as handler]
             [luminus.repl-server :as repl]
             [luminus.http-server :as http]
             [figwheel-sidecar.repl-api :refer [start-figwheel! stop-figwheel!]]
-            [semantic-web-ws.config :refer [env]]
+            [vrpedia.config :refer [env]]
             [clojure.tools.cli :refer [parse-opts]]
             [clojure.tools.logging :as log]
             [mount.core :as mount])

@@ -1,6 +1,6 @@
-(ns semantic-web-ws.sparql.query
+(ns vrpedia.sparql.query
   (:require [yesparql.core :refer :all]
-            [semantic-web-ws.util :as util]))
+            [vrpedia.util :as util]))
 
 (defqueries "sparql/query.sparql" {:connection "http://dbpedia.org/sparql"})
 

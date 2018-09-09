@@ -1,4 +1,4 @@
-(defproject semantic-web-ws "0.1.0-SNAPSHOT"
+(defproject vrpedia "0.1.0-SNAPSHOT"
 
   :description "FIXME: write description"
   :url "http://example.com/FIXME"
@@ -43,7 +43,7 @@
   :test-paths ["test/clj"]
   :resource-paths ["resources"]
   :target-path "target/%s/"
-  :main ^:skip-aot semantic-web-ws.core
+  :main ^:skip-aot vrpedia.core
 
   :plugins [[lein-cprop "1.0.3"]
             [lein-cljsbuild "1.1.7"]
@@ -62,7 +62,7 @@
   :profiles
   {:uberjar {:omit-source true
              :aot :all
-             :uberjar-name "semantic-web-ws.jar"
+             :uberjar-name "vrpedia.jar"
              :source-paths ["env/prod/clj"]
              :resource-paths ["env/prod/resources"]}
 

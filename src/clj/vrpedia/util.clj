@@ -1,4 +1,4 @@
-(ns semantic-web-ws.util
+(ns vrpedia.util
   (:require [clj-http.client :as http]))
 (import org.apache.lucene.analysis.miscellaneous.ASCIIFoldingFilter)
 

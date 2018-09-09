@@ -1,16 +1,16 @@
-(ns semantic-web-ws.middleware
-  (:require [semantic-web-ws.env :refer [defaults]]
-            [cognitect.transit :as transit]
+(ns vrpedia.middleware
+  (:require [cognitect.transit :as transit]
             [clojure.tools.logging :as log]
-            [semantic-web-ws.layout :refer [*app-context* error-page]]
+            [vrpedia.layout :refer [*app-context* error-page]]
             [ring.middleware.anti-forgery :refer [wrap-anti-forgery]]
             [ring.middleware.webjars :refer [wrap-webjars]]
             [muuntaja.core :as muuntaja]
             [muuntaja.format.transit :as transit-format]
             [muuntaja.middleware :refer [wrap-format wrap-params]]
-            [semantic-web-ws.config :refer [env]]
             [ring.middleware.flash :refer [wrap-flash]]
             [immutant.web.middleware :refer [wrap-session]]
+            [ring.middleware.reload :refer [wrap-reload]]
+            [prone.middleware :refer [wrap-exceptions]]
             [ring.middleware.defaults :refer [site-defaults wrap-defaults]])
   (:import [javax.servlet ServletContext]
            [org.joda.time ReadableInstant]))
@@ -19,15 +19,9 @@
   (fn [request]
     (binding [*app-context*
               (if-let [context (:servlet-context request)]
-                ;; If we're not inside a servlet environment
-                ;; (for example when using mock requests), then
-                ;; .getContextPath might not exist
                 (try (.getContextPath ^ServletContext context)
                      (catch IllegalArgumentException _ context))
-                ;; if the context is not specified in the request
-                ;; we check if one has been specified in the environment
-                ;; instead
-                (:app-context env))]
+                nil)]
       (handler request))))
 
 (defn wrap-internal-error [handler]
@@ -54,7 +48,8 @@
     (fn [v] (-> ^ReadableInstant v .getMillis))
     (fn [v] (-> ^ReadableInstant v .getMillis .toString))))
 
-(def restful-format-options muuntaja/default-options)
+(def restful-format-options
+    muuntaja/default-options)
 
 (defn wrap-formats [handler]
   (let [wrapped (-> handler wrap-params (wrap-format restful-format-options))]
@@ -64,7 +59,9 @@
       ((if (:websocket? request) handler wrapped) request))))
 
 (defn wrap-base [handler]
-  (-> ((:middleware defaults) handler)
+  (-> handler
+      wrap-reload
+      wrap-exceptions
       wrap-webjars
       wrap-flash
       (wrap-session {:cookie-attrs {:http-only true}})

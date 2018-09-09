@@ -1,8 +1,8 @@
-(ns semantic-web-ws.routes.api
+(ns vrpedia.routes.api
   (:require [compojure.core :refer [defroutes GET]]
             [ring.util.http-response :as response]
             [clojure.java.io :as io]
-            [semantic-web-ws.dbpedia :as dbpedia]
+            [vrpedia.dbpedia :as dbpedia]
             [clj-http.client :as http]))
 
 

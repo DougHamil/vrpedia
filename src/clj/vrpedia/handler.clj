@@ -1,16 +1,11 @@
-(ns semantic-web-ws.handler
+(ns vrpedia.handler
   (:require [compojure.core :refer [routes wrap-routes]]
-            [semantic-web-ws.layout :refer [error-page]]
-            [semantic-web-ws.routes.home :refer [home-routes]]
-            [semantic-web-ws.routes.api :refer [api-routes]]
+            [vrpedia.layout :refer [error-page]]
+            [vrpedia.routes.home :refer [home-routes]]
+            [vrpedia.routes.api :refer [api-routes]]
             [compojure.route :as route]
-            [semantic-web-ws.env :refer [defaults]]
             [mount.core :as mount]
-            [semantic-web-ws.middleware :as middleware]))
-
-(mount/defstate init-app
-                :start ((or (:init defaults) identity))
-                :stop  ((or (:stop defaults) identity)))
+            [vrpedia.middleware :as middleware]))
 
 (def app-routes
   (routes

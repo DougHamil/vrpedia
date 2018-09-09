@@ -1,4 +1,4 @@
-(ns semantic-web-ws.layout
+(ns vrpedia.layout
   (:require [selmer.parser :as parser]
             [selmer.filters :as filters]
             [markdown.core :refer [md-to-html-string]]

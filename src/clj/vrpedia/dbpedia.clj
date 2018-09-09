@@ -1,8 +1,8 @@
-(ns semantic-web-ws.dbpedia
+(ns vrpedia.dbpedia
     (:require [clj-http.client :as http]
               [clojure.set :as set]
-              [semantic-web-ws.sparql.query :as sparql]
-              [semantic-web-ws.util :as util]))
+              [vrpedia.sparql.query :as sparql]
+              [vrpedia.util :as util]))
 
 (def not-found-resource {:abstract "Not found" :label {:value "Not found"} :uri nil :image "/img/warning_clojure.png"})
 (def wikipedia-search-url "https://en.wikipedia.org/w/api.php?action=opensearch&limit=1&namespace=0&format=json&search=")
