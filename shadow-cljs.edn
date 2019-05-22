@@ -1,0 +1,19 @@
+;; shadow-cljs configuration
+{:source-paths
+ ["src/cljs"]
+
+ :dependencies
+ [[doughamil/threeagent "0.0.1-SNAPSHOT"]
+  [cider/cider-nrepl "0.20.1-SNAPSHOT"]
+  [cljs-http "0.1.45"]]
+
+ :nrepl {:port 7888}
+
+ :builds
+ {:app
+  {:target :browser
+   :output-dir "resources/public/js"
+   :modules {:main {:init-fn vrpedia.core/init}}
+   :devtools
+   {:http-root "resources/public"
+    :http-port 8080}}}}

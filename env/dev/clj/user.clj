@@ -3,10 +3,10 @@
             [vrpedia.core :as core]))
 
 (defn start []
-  (mount/start-without #'core/repl-server))
+  (mount/start))
 
 (defn stop []
-  (mount/stop-except #'core/repl-server))
+  (mount/stop))
 
 (defn restart []
   (stop)

@@ -1,8 +1,6 @@
 (ns vrpedia.core
   (:require [vrpedia.handler :as handler]
-            [luminus.repl-server :as repl]
             [luminus.http-server :as http]
-            [figwheel-sidecar.repl-api :refer [start-figwheel! stop-figwheel!]]
             [vrpedia.config :refer [env]]
             [clojure.tools.cli :refer [parse-opts]]
             [clojure.tools.logging :as log]
@@ -14,27 +12,17 @@
     :parse-fn #(Integer/parseInt %)]])
 
 (mount/defstate ^{:on-reload :noop}
-                http-server
-                :start
-  (do (start-figwheel!)
-      (http/start
-       (-> env
-           (assoc
-            :host "0.0.0.0"
-            :handler (handler/app))
-           (update :port #(or (-> env :port) %)))))
-                :stop
-  (do (stop-figwheel!)
-      (http/stop http-server)))
-
-(mount/defstate ^{:on-reload :noop}
-                repl-server
-                :start
-                (when-let [nrepl-port (env :nrepl-port)]
-                  (repl/start {:port nrepl-port}))
-                :stop
-                (when repl-server
-                  (repl/stop repl-server)))
+  http-server
+  :start
+  (do 
+    (http/start
+     (-> env
+         (assoc
+          :host "0.0.0.0"
+          :handler (handler/app))
+         (update :port #(or (-> env :port) %)))))
+  :stop
+  (http/stop http-server))
 
 
 (defn stop-app []

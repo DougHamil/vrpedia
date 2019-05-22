@@ -10,7 +10,6 @@
             [ring.middleware.flash :refer [wrap-flash]]
             [immutant.web.middleware :refer [wrap-session]]
             [ring.middleware.reload :refer [wrap-reload]]
-            [prone.middleware :refer [wrap-exceptions]]
             [ring.middleware.defaults :refer [site-defaults wrap-defaults]])
   (:import [javax.servlet ServletContext]
            [org.joda.time ReadableInstant]))
@@ -61,7 +60,6 @@
 (defn wrap-base [handler]
   (-> handler
       wrap-reload
-      wrap-exceptions
       wrap-webjars
       wrap-flash
       (wrap-session {:cookie-attrs {:http-only true}})

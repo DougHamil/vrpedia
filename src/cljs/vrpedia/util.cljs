@@ -20,9 +20,5 @@
         (reduce {} (.getKeys goog/object obj)))
     obj))
 
-(defn world-pos [el]
-  (let [v (new js/THREE.Vector3)]
-    (obj->clj (.setFromMatrixPosition v (.-matrixWorld (.-object3D el))))))
-
 (defn log [arg]
   (.log js/console arg))
