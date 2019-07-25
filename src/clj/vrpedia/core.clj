@@ -1,42 +1,9 @@
 (ns vrpedia.core
-  (:require [vrpedia.handler :as handler]
-            [luminus.http-server :as http]
-            [vrpedia.config :refer [env]]
-            [clojure.tools.cli :refer [parse-opts]]
-            [clojure.tools.logging :as log]
-            [mount.core :as mount])
+  (:require [vrpedia.system :as sys])
   (:gen-class))
 
-(def cli-options
-  [["-p" "--port PORT" "Port number"
-    :parse-fn #(Integer/parseInt %)]])
-
-(mount/defstate ^{:on-reload :noop}
-  http-server
-  :start
-  (do 
-    (http/start
-     (-> env
-         (assoc
-          :host "0.0.0.0"
-          :handler (handler/app))
-         (update :port #(or (-> env :port) %)))))
-  :stop
-  (http/stop http-server))
-
-
-(defn stop-app []
-  (doseq [component (:stopped (mount/stop))]
-    (log/info component "stopped"))
-  (shutdown-agents))
-
-(defn start-app [args]
-  (doseq [component (-> args
-                        (parse-opts cli-options)
-                        mount/start-with-args
-                        :started)]
-    (log/info component "started"))
-  (.addShutdownHook (Runtime/getRuntime) (Thread. stop-app)))
+(defonce system (atom nil))
 
 (defn -main [& args]
-  (start-app args))
+  (let [s (sys/start)]
+    (reset! system s)))

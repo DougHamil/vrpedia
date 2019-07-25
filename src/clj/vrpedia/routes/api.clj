@@ -1,19 +1,21 @@
 (ns vrpedia.routes.api
-  (:require [compojure.core :refer [defroutes GET]]
-            [ring.util.http-response :as response]
-            [clojure.java.io :as io]
+  (:require [ring.util.http-response :as response]
             [vrpedia.dbpedia :as dbpedia]
-            [clj-http.client :as http]))
+            [vrpedia.topic.core :as topic]
+            [reitit.ring :as ring]
+            [reitit.core :as r]))
 
+(defn handle-entity-search [req]
+  (let [term (get-in req [:query-params "term"])]
+    (response/ok (topic/search term))))
 
-(defn entity-search [req]
-  (let [query (get-in req [:params :query])]
-    (response/ok (dbpedia/find-and-resolve-resource-memoized query))))
+(defn handle-entity-request [req]
+  (response/ok (dbpedia/resolve-resource-memoized req)))
 
-(defn entity-request [uri]
-  (response/ok (dbpedia/resolve-resource-memoized uri)))
+(def routes
+  ["/api"
+   ["/entity" {:get {:handler handle-entity-request}}]
+   ["/entity/search" {:get {:parameters {:query {:query string?}}}
+                      :handler handle-entity-search}]])
 
-(defroutes api-routes
-  (GET "/api/entity/search" [] entity-search)
-  (GET "/api/entity" [uri] (entity-request uri)))
 

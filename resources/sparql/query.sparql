@@ -14,6 +14,20 @@ WHERE {
     FILTER langMatches(lang(?label), 'en') .
 }
 
+-- name: select-common
+-- Endpoint: http://dbpedia.org/sparql
+PREFIX dbr: <http://dbpedia.org/resource/>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?label ?topicOf
+WHERE {
+  ?thing rdfs:label ?label .
+  ?thing foaf:isPrimaryTopicOf ?topicOf
+  FILTER langMatches(lang(?label), 'en') .
+}
+
 -- name: select-redirects
 -- Endpoint: http://dbpedia.org/sparql
 PREFIX dbr: <http://dbpedia.org/resource/>

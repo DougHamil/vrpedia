@@ -1,13 +1,16 @@
 (ns user
-  (:require [mount.core :as mount]
-            [vrpedia.core :as core]))
+  (:require [vrpedia.system :as sys]))
+
+(defonce system (atom nil))
 
 (defn start []
-  (mount/start))
+  (when-let [s @system]
+    (sys/halt! s)
+    (reset! system nil))
+  (reset! system (sys/start)))
 
 (defn stop []
-  (mount/stop))
+  (when-let [s @system]
+    (sys/halt! s)
+    (reset! system nil)))
 
-(defn restart []
-  (stop)
-  (start))

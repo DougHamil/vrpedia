@@ -1,19 +1,18 @@
 (ns vrpedia.dbpedia
-    (:require [clj-http.client :as http]
-              [clojure.set :as set]
-              [vrpedia.sparql.query :as sparql]
-              [vrpedia.util :as util]))
+  (:require [clj-http.client :as http]
+            [clojure.set :as set]
+            [vrpedia.sparql.query :as sparql]
+            [vrpedia.util :as util]))
 
 (def not-found-resource {:abstract "Not found" :label {:value "Not found"} :uri nil :image "/img/warning_clojure.png"})
 (def wikipedia-search-url "https://en.wikipedia.org/w/api.php?action=opensearch&limit=1&namespace=0&format=json&search=")
 (def resource-path "http://dbpedia.org/resource/")
 (def display-types {"http://dbpedia.org/ontology/Place" "Place"
-                    "http://dbpedia.org/ontology/City" "City"
-                    })
+                    "http://dbpedia.org/ontology/City" "City"})
 (defn name->resource [name] (str resource-path name))
 (defn name->ontology [name] (str "http://dbpedia.org/ontology/" name))
-(defn query-wikipedia [query]
-  (let [url (str wikipedia-search-url query)]
+(defn query-wikipedia [term]
+  (let [url (str wikipedia-search-url term)]
     (as-> url u
       (http/get u {:accept :json :as :json})
       (:body u)
@@ -22,8 +21,8 @@
         u
         (name->resource (last (clojure.string/split u #"/")))))))
 
-(defn find-resource-uri [query]
-  (let [uri (query-wikipedia query)]
+(defn find-resource-uri [term]
+  (let [uri (query-wikipedia term)]
     (if (nil? uri)
       nil
       (sparql/query-redirect uri))))
@@ -73,16 +72,16 @@
   (if (nil? uri)
     not-found-resource
     (-> {:uri uri}
-      (resolver resolve-common)
-      (resolver "http:
+        (resolver resolve-common)
+        (resolver "http:
 //www.w3.org/2003/01/geo/wgs84_pos#SpatialThing" resolve-location)
-      (resolver (name->ontology "PopulatedPlace") resolve-population)
-      (resolver (name->ontology "PopulatedPlace") resolve-people)
-      (resolver resolve-references))))
+        (resolver (name->ontology "PopulatedPlace") resolve-population)
+        (resolver (name->ontology "PopulatedPlace") resolve-people)
+        (resolver resolve-references))))
 
 (def resolve-resource-memoized (memoize resolve-resource))
 
-(defn find-and-resolve-resource [query]
-  (resolve-resource (find-resource-uri query)))
+(defn find-and-resolve-resource [term]
+  (resolve-resource (find-resource-uri term)))
 
 (def find-and-resolve-resource-memoized (memoize find-and-resolve-resource))
