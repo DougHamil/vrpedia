@@ -1,17 +1,11 @@
 (ns vrpedia.subject
   (:require-macros [cljs.core.async.macros :refer [go]])
   (:require [vrpedia.state :refer [state]]
-            [cljs.core.async :refer [<!]]
+            [cljs.core.async :refer [<! >! chan]]
             [cljs-http.client :as http]))
 
-
-(def max-subjects 5)
-
 (defn set-subject! [subject]
-  (-> subject
-      (update :abstract #(clojure.string/replace % #"[:;]" " "))
-      (->>
-       (swap! state assoc :subject))))
+  (swap! state assoc :topic subject))
 
 (defn load-subject! [uri]
   (swap! state assoc :subject nil)
@@ -19,5 +13,8 @@
         (set-subject! (:body response)))))
 
 (defn search-for-subject! [term]
-  (go (let [response (<! (http/get (str "/api/entity/search?query=" term)))]
-        (set-subject! (:body response)))))
+  (let [c (chan)]
+    (go (let [response (<! (http/get (str "/api/entity/search?term=" term)))]
+          (>! c (:body response))))
+    c))
+

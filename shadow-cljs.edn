@@ -16,4 +16,5 @@
    :modules {:main {:init-fn vrpedia.core/init}}
    :devtools
    {:http-root "resources/public"
-    :http-port 8080}}}}
+    :http-port 8081
+    :proxy-url "http://localhost:8080/"}}}}

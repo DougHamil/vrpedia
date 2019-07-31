@@ -1,10 +1,16 @@
 (ns vrpedia.component.text-box
   (:require ["three" :as three]
-            ["three-bmfont-text" :as bmfont])
+            ["three-bmfont-text" :as bmfont]
+            [vrpedia.state :refer [state]]
+            [vrpedia.shaders.msdf :as msdf-shader])
   (:require-macros [threeagent.alpha.macros :refer [defcomponent]]))
 
-(defonce ^:private ^:dynamic *font* nil)
-(defonce ^:private ^:dynamic *font-image* nil)
+(defonce blah-blalh nil)
+
+
+
+
+  (def default-font "didactgothic/DidactGothic-Regular")
 
 (defonce ^:private canvases (js/Map.))
 
@@ -17,27 +23,32 @@
         (.appendChild js/document.body c)
         c))))
 
-(defcomponent :text-box [{:keys [text id]}]
-  (if (and *font* *font-image*)
-    (let [geo (bmfont #js {:width 300
-                           :align "right"
+
+(defcomponent :text-box [{:keys [text width color opacity font font-texture]}]
+  (if (and font font-texture)
+    (let [geo (bmfont #js {:width (or width 300)
+                           :align "left"
                            :text text
-                           :font *font*})
-          mat (three/MeshBasicMaterial. #js {:map *font-image*
-                                             :transparent true
-                                             :color 0xAAFFFFF})]
-      (js/console.log geo)
-      (js/console.log *font-image*)
+                           :font font})
+          color (three/Color. (or color 0xFFFFFF))
+          opacity (or opacity 1.0)
+          mat (three/RawShaderMaterial. (msdf-shader/create-shader opacity color font-texture))]
       (three/Mesh. geo mat))
     (three/Object3D.)))
 
 
 (defn init! []
-  (-> (js/window.fetch "https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/creepster/Creepster-Regular.json")
+  (-> (js/window.fetch (str "https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/"
+                            default-font
+                            ".json"))
       (.then #(.json %))
       (.then (fn [f]
-               (set! *font* f))))
+               (swap! state assoc :font f))))
   (let [texture-loader (three/TextureLoader.)]
-    (.load texture-loader "https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/creepster/Creepster-Regular.png"
+    (.load texture-loader (str "https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/"
+                               default-font
+                               ".png")
            (fn [t]
-             (set! *font-image* t)))))
+             (swap! state assoc :font-texture t)))))
+
+

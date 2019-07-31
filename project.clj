@@ -5,6 +5,7 @@
                  [org.jsoup/jsoup "1.12.1"]
                  [cprop "0.1.11"]
                  [integrant "0.7.0"]
+                 [hickory "0.7.1"]
                  [funcool/struct "1.1.0"]
                  [markdown-clj "1.0.1"]
                  [metosin/muuntaja "0.6.4"]
