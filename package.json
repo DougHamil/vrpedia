@@ -21,7 +21,7 @@
     "load-bmfont": "^1.4.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "three": "^0.104.0",
+    "three": "^0.125.0",
     "three-bmfont-text": "^2.3.0"
   }
 }
